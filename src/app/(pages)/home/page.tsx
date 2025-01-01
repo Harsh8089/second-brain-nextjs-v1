@@ -1,23 +1,22 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Redirect from "@/components/Redirect";
+import Content from "@/components/ui/content";
 import prisma from "@/db";
-import axios from "axios";
 import { getServerSession } from "next-auth";
 
-
-export default async function Home() {
+export default async function page() {
     const session = await getServerSession(authOptions);
+    
+    if(!session?.user) return <Redirect to={"/signin"} />
 
-    if(!session || !session.user) {
-        return <Redirect to={"/signin"} />
-    }
     const contents = await prisma.content.findMany({
         where: {
             userId: parseInt(session.user.id)
-        }
+        },
     })
-    
-    return <div>
-        {JSON.stringify(contents)}
-    </div>
+
+    return <Content
+        contents={contents}
+        user={session.user}
+    />
 }
