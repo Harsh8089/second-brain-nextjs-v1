@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Greeting from "./greeting";
 import Modal from "./modal";
+import Sidebar from "./sidebar";
 
 export default function Content({
     contents,
@@ -21,7 +22,10 @@ export default function Content({
 			modal ? (
 				<Modal />
 			) : (
-				<p>{JSON.stringify(contents)}</p>
+				<div>
+					<Sidebar />
+					<p>{JSON.stringify(contents)}</p>
+				</div>
 			)
 		}
     </main>

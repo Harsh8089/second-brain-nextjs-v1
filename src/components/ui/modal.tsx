@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Input from "./input";
 import Button from "./button";
 import axios from "axios";
-import { BACKEND_URL } from "@/config";
+import { NEXTAPP_URL } from "@/config";
 
 export default function Modal() {
     const titleRef = useRef<HTMLInputElement>(null);
@@ -15,7 +15,7 @@ export default function Modal() {
         try {
             // if(!(titleRef.current && typeRef.current && descriptionRef.current)) return;
 
-            const res = await axios.post(`${BACKEND_URL}/api/content`, {
+            const res = await axios.post(`${NEXTAPP_URL}/api/content`, {
                 title: titleRef.current?.value,
                 description: descriptionRef.current?.value,
                 type: typeRef.current?.value 

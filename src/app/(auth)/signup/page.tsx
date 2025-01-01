@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
-import { BACKEND_URL } from "@/config";
+import { NEXTAPP_URL } from "@/config";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -16,7 +16,7 @@ export default function SignUp() {
 
     const signUp = async () => {
         try {
-            const res = await axios.post(`${BACKEND_URL}/api/auth/signup`, {
+            const res = await axios.post(`${NEXTAPP_URL}/api/auth/signup`, {
                 username: usernameRef.current?.value,
                 email: emailRef.current?.value,
                 password: passwordRef.current?.value
