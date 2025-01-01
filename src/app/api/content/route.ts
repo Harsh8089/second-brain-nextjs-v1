@@ -42,32 +42,3 @@ export async function POST(req: NextRequest) {
         })   
     }
 }
-
-export async function GET() {
-    const session = await getServerSession(authOptions);
-    if(!session || !session.user) return NextResponse.json({
-        error: "User is not logged in"
-    }, {
-        status: 401
-    });
-
-    try {
-        const contents = await prisma.content.findMany({
-            where: {
-                userId: parseInt(session.user.id)
-            }
-        })
-
-        return NextResponse.json({
-            contents
-        }, {
-            status: 200
-        });
-    } catch (error) {
-        return NextResponse.json({
-            error
-        }, {
-            status: 500
-        })   
-    }
-}

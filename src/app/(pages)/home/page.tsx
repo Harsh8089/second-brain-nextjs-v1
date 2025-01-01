@@ -1,10 +1,9 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Redirect from "@/components/Redirect";
-import Modal from "@/components/ui/modal";
-import { BACKEND_URL } from "@/config";
+import prisma from "@/db";
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { headers } from "next/headers";
+
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
@@ -12,12 +11,13 @@ export default async function Home() {
     if(!session || !session.user) {
         return <Redirect to={"/signin"} />
     }
-    const contents = await fetch(`${BACKEND_URL}/api/content`, {
-        headers: await headers()
-    });
-    const data = await contents.json();
+    const contents = await prisma.content.findMany({
+        where: {
+            userId: parseInt(session.user.id)
+        }
+    })
     
     return <div>
-        {JSON.stringify(data)}
+        {JSON.stringify(contents)}
     </div>
 }
