@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth"
 
 export default async function Dashboard() {
   const session = await getServerSession();
+  
+  console.log(session)
 
   if(!session || !session.user) {
     return <Redirect to={"/"} />
@@ -10,6 +12,6 @@ export default async function Dashboard() {
 
   return <div>
     Dashboard Page - 
-    <h1>{JSON.stringify(session)}</h1>
+    <h1>{JSON.stringify(session.user)}</h1>
   </div>
 }

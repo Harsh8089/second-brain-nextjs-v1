@@ -14,6 +14,5 @@ export default function SignIn() {
     return <div>
         <h2>Sign in with Email</h2>
         <Signin />
-        {/* {JSON.stringify(session)} */}
     </div>
 }
