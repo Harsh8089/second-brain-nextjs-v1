@@ -5,8 +5,13 @@ import Input from "./input";
 import Button from "./button";
 import axios from "axios";
 import { NEXTAPP_URL } from "@/config";
+import { CircleX } from "lucide-react";
 
-export default function Modal() {
+export default function Modal({
+    setModal
+}: {
+    setModal: any
+}) {
     const titleRef = useRef<HTMLInputElement>(null);
     const typeRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -28,7 +33,13 @@ export default function Modal() {
 
     return <div className="w-screen h-screen overflow-hidden flex justify-center items-center">
         <div className="w-[50%] min-h-[400px] border-2">
-            <h1>Add Your Second Brain</h1>
+            <div className="flex justify-between items-center">
+                <h1>Add Your Second Brain</h1>
+                <Button
+                    startIcon={<CircleX />}
+                    onClick={() => setModal(false)}
+                />
+            </div>
             <div className="flex flex-col">
                 <Input
                     type={"text"}

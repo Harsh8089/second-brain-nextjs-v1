@@ -20,6 +20,10 @@ export default async function page({
     // @ts-ignore
     const slug: tag = ((await params).slug).toUpperCase();
     
+    if (!["YOUTUBE", "TWEET", "DOCUMENT", "LINK"].includes(slug ?? "")) {
+        return <Redirect to={"/error"} />
+    }
+
     const contents = await prisma.content.findMany({
         where: {
             type: slug,

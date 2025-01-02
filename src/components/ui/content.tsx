@@ -15,18 +15,22 @@ export default function Content({
 	const [modal, setModal] = useState<boolean>(false);
 
     return <main>
-        <Greeting
-			setModal={setModal}
-		/>
-		{
-			modal ? (
-				<Modal />
-			) : (
-				<div>
-					<Sidebar />
-					<p>{JSON.stringify(contents)}</p>
-				</div>
-			)
-		}
+        <div className="ml-[100px]">
+			<Greeting
+				setModal={setModal}
+			/>
+			{
+				modal ? (
+					<Modal 
+						setModal={setModal}
+					/>
+				) : (
+					<div>
+						
+						<p>{JSON.stringify(contents)}</p>
+					</div>
+				)
+			}
+		</div>
     </main>
 }

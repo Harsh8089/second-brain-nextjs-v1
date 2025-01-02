@@ -1,8 +1,8 @@
 import { ReactElement } from "react"
 
 interface ButtonProps {
-    text: string,
-    styles: string,
+    text?: string,
+    styles?: string,
     startIcon?: ReactElement,
     endIcon?: ReactElement,
     onClick?: () => void
