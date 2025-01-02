@@ -3,34 +3,23 @@
 import { useState } from "react";
 import Greeting from "./greeting";
 import Modal from "./modal";
-import Sidebar from "./sidebar";
 
 export default function Content({
     contents,
-    user
 }: {
     contents: any,
-    user: any
 }) {
 	const [modal, setModal] = useState<boolean>(false);
-
+	console.log(contents);
     return <main>
-        <div className="ml-[100px]">
+        <div className={`ml-72 bg-black px-10 py-10 h-screen`}>
 			<Greeting
 				setModal={setModal}
 			/>
-			{
-				modal ? (
-					<Modal 
-						setModal={setModal}
-					/>
-				) : (
-					<div>
-						
-						<p>{JSON.stringify(contents)}</p>
-					</div>
-				)
-			}
+			<div className="text-white">{JSON.stringify(contents)}</div>
 		</div>
+		{
+			modal && <Modal setModal={setModal} />
+		}
     </main>
 }

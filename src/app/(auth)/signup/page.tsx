@@ -47,7 +47,7 @@ export default function SignUp() {
         />
         <Button 
             text="Register"
-            styles=""
+            style=""
             onClick={signUp}
         />
     </div>

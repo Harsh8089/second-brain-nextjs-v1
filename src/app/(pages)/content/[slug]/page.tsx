@@ -31,7 +31,7 @@ export default async function page({
         }
     })
 
-    return <div>
+    return <div className="ml-72 bg-black text-white h-screen">
         Tag: {slug}
         {JSON.stringify(contents)}
     </div>

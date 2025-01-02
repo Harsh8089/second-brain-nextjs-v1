@@ -17,6 +17,5 @@ export default async function page() {
 
     return <Content
         contents={contents}
-        user={session.user}
     />
 }

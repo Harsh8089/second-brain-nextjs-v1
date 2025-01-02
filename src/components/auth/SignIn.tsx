@@ -40,12 +40,12 @@ export default function Signin() {
         />
         <Button
             text="Login"
-            styles=""
+            style=""
             onClick={handleSignIn}
         />
         <Button
             text="Logout"
-            styles=""
+            style=""
             onClick={() => signOut()}
         />
     </div>

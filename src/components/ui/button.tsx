@@ -2,7 +2,7 @@ import { ReactElement } from "react"
 
 interface ButtonProps {
     text?: string,
-    styles?: string,
+    style?: string,
     startIcon?: ReactElement,
     endIcon?: ReactElement,
     onClick?: () => void
@@ -10,17 +10,17 @@ interface ButtonProps {
 
 export default function Button({
     text,
-    styles,
+    style,
     startIcon,
     endIcon,
     onClick
 }: ButtonProps) {
     return <button
-        className={styles}
+        className={style}
         onClick={onClick}
     >
         {startIcon}
-        {text}
-        {endIcon}
+        <p>{text}</p>
+        <div>{endIcon}</div>
     </button>
 }
