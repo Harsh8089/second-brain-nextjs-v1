@@ -1,3 +1,5 @@
+"use client";
+
 import { NEXTAPP_URL } from "@/config";
 import { 
     Brain,
@@ -6,8 +8,8 @@ import {
     Twitter, 
     Youtube 
 } from "lucide-react";
-import { headers } from "next/headers";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
 
 
@@ -52,11 +54,10 @@ function SidebarLink({
     </Link>
 }
 
-export default async function Sidebar() {
-    const headersList = await headers();
-    const pathName: string[] = headersList.get('x-current-path')?.split("/") ?? [];
+export default function Sidebar() {
+    const pathName = usePathname().split("/");
     const activeSideBarLink = pathName[pathName.length - 1];
-    
+
     return <div className="fixed left-0 top-0 h-screen w-72 flex flex-col bg-black z-10 py-10 px-2">
         <h1>Logo</h1>
         <div className="flex flex-col mt-14 gap-6 items-start">
