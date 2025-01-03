@@ -22,9 +22,19 @@ model Content {
   id          Int       @default(autoincrement())   @id
   title       String
   description String?
+  link        String 
   type        ContentType
   userId      Int       
   user        User      @relation(fields: [userId], references: [id])
+  tags        Tag[]
+}
+
+model Tag {
+  id          Int         @default(autoincrement())   @id
+  tag         String      @db.VarChar(255)            
+  contentId   Int
+  content     Content     @relation(fields: [contentId], references: [id])
+  @@unique([contentId, tag])
 }
 
 enum Role {
