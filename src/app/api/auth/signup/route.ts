@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db";
 import bcyrpt from "bcryptjs";
+import { sendMail } from "@/mailer";
 
 export async function POST(req: NextRequest) {
     const { username, email, password } = await req.json();
@@ -27,6 +28,8 @@ export async function POST(req: NextRequest) {
                 password: hashPassword
             }
         });
+
+        await sendMail({ userId: userDb.id, email: userDb.email, emailType: "VERIFY" });
 
         return NextResponse.json({
             user: userDb

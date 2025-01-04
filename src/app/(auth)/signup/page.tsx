@@ -21,6 +21,7 @@ export default function SignUp() {
                 email: emailRef.current?.value,
                 password: passwordRef.current?.value
             });
+            console.log(res)
             if(res.status === 200) {
                 router.push('/signin');
             }
