@@ -8,7 +8,7 @@ export default function SignIn() {
     const session = useSession();
 
     if(session && session.status === 'authenticated') {
-        return <Redirect to="/home" />
+        return <Redirect to="/content/all" />
     }
 
     return <div>

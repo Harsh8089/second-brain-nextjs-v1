@@ -4,33 +4,30 @@ import { authOptions } from "../auth/[...nextauth]/authOptions";
 import prisma from "@/db";
 
 export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOptions);
-    
-    if(!session || !session.user) return NextResponse.json({
-        error: "User is not logged in"
-    }, {
-        status: 401
-    });
-
-    const { title, description, type, link, tags } = await req.json();
-    if(!title || !type || !link || !description || !tags) return NextResponse.json({
-        error: "Title / Description / Type is missing"
-    }, {
-        status: 401
-    });
-
     try {
+        const { title, description, type, link, tags } = await req.json();
+        if(!title || !type || !link) return NextResponse.json({
+            error: "Title / Description / Type is missing"
+        }, {
+            status: 401
+        });
+
+        const session = await getServerSession(authOptions);
+    
+        if(!session || !session.user) return NextResponse.json({
+            error: "User is not logged in"
+        }, {
+            status: 401
+        });
+
         const content = await prisma.content.create({
-            data: {
-                title,
-                description,
-                type,
-                link,
-                userId: parseInt(session.user.id),
-                tags: {
-                    // @ts-ignore
-                    create: tags.map(tag => ({ "tag": tag }))
-                }
+            data: { title, description, type, link, userId: parseInt(session.user.id),
+                ...(tags.length > 0 && {
+                    tags: {
+                        // @ts-ignore
+                        create: tags.map(tag => ({ "tag": tag }))
+                    }
+                })
             },
         })    
         return NextResponse.json({
@@ -51,3 +48,35 @@ export async function POST(req: NextRequest) {
         });  
     }
 }
+
+export async function GET(req: NextRequest) {
+    try {
+        const session = await getServerSession(authOptions);
+    
+        if(!session || !session.user) return NextResponse.json({
+            error: "User is not logged in"
+        }, {
+            status: 401
+        });
+
+        const contents = await prisma.content.findMany({
+            where: {
+                userId: parseInt(session.user.id)
+            },
+            select: {
+                id: true,
+                title: true,
+                link: true,
+                type: true,
+                description: true,
+                tags: true
+            }
+        })
+
+        return NextResponse.json({ contents }, { status: 200 });
+
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({ error }, { status: 500 });  
+    }
+} 

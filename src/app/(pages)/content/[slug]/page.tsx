@@ -1,9 +1,10 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Redirect from "@/components/Redirect";
 import prisma from "@/db";
-import { getServerSession } from "next-auth"
+import { getServerSession } from "next-auth";
+import Content from "@/components/ui/content";
 
-type tag = "YOUTUBE" | "TWEET" | "DOCUMENT" | "LINK" | undefined
+type tag = "YOUTUBE" | "TWEET" | "DOCUMENT" | "LINK" | "ALL" | undefined
 
 export default async function page({
     params
@@ -20,19 +21,33 @@ export default async function page({
     // @ts-ignore
     const slug: tag = ((await params).slug).toUpperCase();
     
-    if (!["YOUTUBE", "TWEET", "DOCUMENT", "LINK"].includes(slug ?? "")) {
+    if (!["ALL", "YOUTUBE", "TWEET", "DOCUMENT", "LINK",].includes(slug ?? "")) {
         return <Redirect to={"/error"} />
     }
+    
+    let contents: any;
 
-    const contents = await prisma.content.findMany({
-        where: {
-            type: slug,
-            userId: parseInt(session.user.id)
-        }
-    })
+    if(slug === "ALL") {
+        contents = await prisma.content.findMany({
+            where: {
+                userId: parseInt(session.user.id)
+            },
+        })
+
+    } else  {
+        contents = await prisma.content.findMany({
+            where: {
+                type: slug,
+                userId: parseInt(session.user.id)
+            }
+        })
+    }
 
     return <div className="ml-72 bg-black text-white h-screen">
-        Tag: {slug}
-        {JSON.stringify(contents)}
+       {
+            contents && <Content 
+                contents={contents}
+            />
+       }
     </div>
-} 
+}

@@ -38,7 +38,7 @@ function SidebarLink({
     activeSideBarLink
 }: SideBarProps) {
     return <Link 
-        href={`${link === "all" ? `${NEXTAPP_URL}/home` : `${NEXTAPP_URL}/content/${link}`}`}
+        href={`${NEXTAPP_URL}/content/${link}`}
         className={`w-full py-2 px-3 rounded-lg
             ${(activeSideBarLink === link || (link === "all" && activeSideBarLink === "home" )) ? "bg-blue-800 bg-opacity-30" : "hover:bg-blue-950 hover:bg-opacity-40 duration-150 transition-all group"}    
         `}

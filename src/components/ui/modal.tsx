@@ -15,6 +15,7 @@ export default function Modal({
     setModal: any
 }) {
     const titleRef = useRef<HTMLInputElement>(null); 
+    const linkRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
     const [type, setType] = useState<Content>("youtube");
@@ -24,12 +25,21 @@ export default function Modal({
 
     const addBrain = async() => {
         try {
-            const res = await axios.post(`${NEXTAPP_URL}/api/content`, {
-                title: titleRef.current?.value,
-                description: descriptionRef.current?.value,
-                type: type.toUpperCase(),
-            })
-            console.log(res);
+            if(titleRef.current && linkRef.current && type) {
+                await axios.post(`${NEXTAPP_URL}/api/content`, {
+                    title: titleRef.current?.value,
+                    description: descriptionRef.current?.value,
+                    link: linkRef.current?.value,
+                    type: type.toUpperCase(),
+                    tags
+                })
+                // titleRef.current.value = '';
+                // linkRef.current.value = '';
+                // if(descriptionRef.current) descriptionRef.current.value = '';
+                // setType("youtube");
+                // setTags([]);
+                setModal(false);
+            }
         } catch (error) {
             console.log(error);   
         }
@@ -56,27 +66,37 @@ export default function Modal({
     return <div className="w-screen h-screen backdrop-blur-md fixed left-0 top-0 overflow-hidden flex justify-center items-center z-20">
         <div className="w-[55%] min-h-[400px] bg-slate-950 border-slate-800 border-[1px] rounded-lg py-6 px-4 overflow-hidden">
             <div className="flex justify-between items-center border-b-[1px] border-slate-700 pb-4">
-                <h1 className="text-white font-semibold text-3xl">Add Your Second Brain</h1>
+                <h1 className="text-white font-semibold text-2xl">Add Your Second Brain</h1>
                 <div className="bg-[#7f1d1d] p-1 rounded-md flex items-center justify-center">
                     <Button
-                        startIcon={<X className="text-white w-6 h-6"/>}
+                        startIcon={<X className="text-white w-5 h-5"/>}
                         onClick={() => setModal(false)}
                     />
                 </div>
             </div>
             <div className="flex flex-col mt-8">
                 <div className="w-full flex flex-col gap-2">
-                    <p className="text-xl text-white font-semibold tracking-tight">Title</p>
+                    <p className="text-md text-white font-semibold tracking-tight">Title</p>
                     <Input
                         type="text"
                         placeholder="Enter a title"
                         reference={titleRef}
-                        style="bg-slate-900 px-4 py-2 placeholder:text-slate-400 placehoder:text-lg text-lg outline-none text-white rounded-md"
+                        style="bg-slate-900 px-4 py-2 placeholder:text-slate-400 placehoder:text-md text-md outline-none text-white rounded-md"
+                    />
+                </div>
+
+                <div className="w-full flex flex-col gap-2 mt-4">
+                    <p className="text-md text-white font-semibold tracking-tight">Link</p>
+                    <Input
+                        type="text"
+                        placeholder="Enter a link"
+                        reference={linkRef}
+                        style="bg-slate-900 px-4 py-2 placeholder:text-slate-400 placehoder:text-md text-md outline-none text-white rounded-md"
                     />
                 </div>
                 
                 <div className="w-full flex flex-col gap-2 mt-4">
-                    <p className="text-xl text-white font-semibold tracking-tight">Type</p>
+                    <p className="text-md text-white font-semibold tracking-tight">Type</p>
                     <div className="grid grid-cols-4 gap-4 bg-slate-900 p-4 rounded-md">
                         {["youtube", "tweet", "document", "link"].map((radio, idx) => (
                             <label 
@@ -118,7 +138,7 @@ export default function Modal({
                 </div>
 
                 <div className="flex flex-col mt-4">
-                    <p className="text-xl text-white font-semibold tracking-tight">Tags</p>
+                    <p className="text-md text-white font-semibold tracking-tight">Tags</p>
                     <div className="flex gap-2 my-2">
                         {
                             tags.map((tag, idx) => {
@@ -136,19 +156,19 @@ export default function Modal({
                         type={"text"}
                         placeholder="Enter tags seperated by comma"
                         reference={tagRef}
-                        style="bg-slate-900 px-4 py-2 placeholder:text-slate-400 placehoder:text-lg text-lg outline-none text-white rounded-md"
+                        style="bg-slate-900 px-4 py-2 placeholder:text-slate-400 placehoder:text-md text-md outline-none text-white rounded-md"
                         onChange={createTags}
                     />
                 </div>
 
                 <div className="w-full flex flex-col gap-2 mt-4">
                     <label htmlFor="description">
-                        <p className="text-xl text-white font-semibold tracking-tight">Description</p>
+                        <p className="text-md text-white font-semibold tracking-tight">Description</p>
                         <textarea 
                             id="description"
                             placeholder="Enter any description"
-                            rows={4}
-                            className="bg-slate-900 w-full px-4 py-2 placeholder:text-slate-400 placehoder:text-lg text-lg outline-none text-white rounded-md"
+                            rows={3}
+                            className="bg-slate-900 w-full px-4 py-2 placeholder:text-slate-400 placehoder:text-md text-md outline-none text-white rounded-md"
                             ref={descriptionRef}
                         />
                     </label>
@@ -156,7 +176,7 @@ export default function Modal({
 
                 <Button
                     text="Create Brain"
-                    style="mt-8 w-48 flex justify-center items-center bg-gradient-to-t from-blue-800 to-indigo-500 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 text-md"
+                    style="mt-4 w-48 flex justify-center items-center bg-gradient-to-t from-blue-800 to-indigo-500 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 text-md"
                     onClick={addBrain}
                 />
             </div>

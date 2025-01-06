@@ -12,8 +12,8 @@ export default async function layout({
         return <Redirect to={"/signin"} />
     }
     
-    return <div>
+    return <>
         <Sidebar />
         {children}
-    </div>
+    </>
 } 
